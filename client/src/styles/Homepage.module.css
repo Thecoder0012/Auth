@@ -1,0 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+ }
+ 
+ 
+ li{
+    list-style: none;
+    display: inline;
+    padding: 50px;
+ }
+ 
+ li a{
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    font-weight: 100;
+
+ }
+
+ .container ul a:hover{
+    text-decoration: underline;
+ }
+ 
+ .container{
+   /* position: absolute; */
+   display: flex;
+   font-size: 1.5em;
+   font-weight: 400;
+   padding: 2%;
+   justify-content: center;
+   background-color: black;
+   width: 100%;
+ }
+
+.container .login{
+   position: relative;
+   left: 15%;
+   font-size: 1.0em;
+   font-weight: 400;
+}
+
+.container .login:hover{
+   text-decoration:underline;
+}
+
+.loggedIn{
+    position: absolute;
+    left: 38%;
+    top: 25%;
+}

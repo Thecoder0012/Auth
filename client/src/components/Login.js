@@ -1,5 +1,6 @@
 import styles from "../styles/Login.module.css";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export const Login = () => {
@@ -32,7 +33,7 @@ export const Login = () => {
   return (
     <div className="">
       <form onSubmit={submit} className={styles.container} method="POST">
-        <p style={{ color:"red" }}>{message}</p>
+        <p style={{ color: "red" }}>{message}</p>
         <h1>Login</h1>
         <p>
           <input
@@ -58,8 +59,13 @@ export const Login = () => {
         </p>
         <input type="submit" id={styles.submit} value="Sign in" />
       </form>
+
+      <div className={styles.signUpButton}>
+        <p>
+          <Link to="/signup">Not registered yet? Sign up here!</Link>
+        </p>
+      </div>
     </div>
-    
-);
+  );
 
 }
