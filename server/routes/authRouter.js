@@ -50,4 +50,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/destroy", (req, res) => {
+  req.session.destroy();
+  res.send({ message: "Session user_id deleted" });
+});
+
 export default router;
