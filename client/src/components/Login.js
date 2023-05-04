@@ -1,6 +1,6 @@
 import styles from "../styles/Login.module.css";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 export const Login = () => {
@@ -8,7 +8,7 @@ export const Login = () => {
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate();
   const [message,setMessage] = useState("");
 
   const submit = async (e) => {
@@ -18,7 +18,7 @@ export const Login = () => {
       password: credentials.password,
     },{withCredentials:true});
     response.data.id > 0 && response.data !== null ? (
-      window.location.replace("/homepage")
+      navigate("/homepage")
     ) : setMessage("Wrong credentials");
     }
   
@@ -62,7 +62,7 @@ export const Login = () => {
 
       <div className={styles.signUpButton}>
         <p>
-          <Link to="/signup">Not registered yet? Sign up here!</Link>
+          <Link to="/">Not registered yet? Sign up here!</Link>
         </p>
       </div>
     </div>
