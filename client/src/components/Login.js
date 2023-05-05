@@ -1,6 +1,10 @@
 import styles from "../styles/Login.module.css";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { API_URL } from "../urlConfig";
+import "react-toastify/dist/ReactToastify.css";
+
 import axios from "axios";
 
 export const Login = () => {
@@ -8,32 +12,39 @@ export const Login = () => {
     email: "",
     password: "",
   });
+  const { email, password } = credentials;
   const navigate = useNavigate();
-  const [message,setMessage] = useState("");
+  const WITH_CREDENTIALS = { withCredentials: true };
 
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-   const response = await axios.post("http://localhost:8080/login", {
-      email: credentials.email,
-      password: credentials.password,
-    },{withCredentials:true});
-    response.data.id > 0 && response.data !== null ? (
-      navigate("/homepage")
-    ) : setMessage("Wrong credentials");
+    try {
+      const response = await axios.post(
+        API_URL + "/login",{
+          email: email,
+          password: password,
+        },WITH_CREDENTIALS
+      );
+      if (response.status === 200) {
+        navigate("/homepage");
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
-  
+  };
 
-  const inputChange = (event) => {
-    setCredentials({
-      ...credentials,
+  const handleInputChange = (event) => {
+    setCredentials((previousCredentials) => ({
+      ...previousCredentials,
       [event.target.name]: event.target.value,
-    });
+    }));
   };
 
   return (
     <div className="">
-      <form onSubmit={submit} className={styles.container} method="POST">
-        <p style={{ color: "red" }}>{message}</p>
+      <ToastContainer autoClose={15000} closeOnClick={true} />
+
+      <form onSubmit={handleSubmit} className={styles.container} method="POST">
         <h1>Login</h1>
         <p>
           <input
@@ -41,8 +52,8 @@ export const Login = () => {
             type="text"
             name="email"
             placeholder="Email"
-            value={credentials.email}
-            onChange={inputChange}
+            value={email}
+            onChange={handleInputChange}
             required
           />
         </p>
@@ -52,8 +63,8 @@ export const Login = () => {
             type="password"
             name="password"
             placeholder="Password"
-            value={credentials.password}
-            onChange={inputChange}
+            value={password}
+            onChange={handleInputChange}
             required
           />
         </p>
@@ -62,10 +73,9 @@ export const Login = () => {
 
       <div className={styles.signUpButton}>
         <p>
-          <Link to="/">Not registered yet? Sign up here!</Link>
+          <Link to="/signup">Not registered yet? Sign up here!</Link>
         </p>
       </div>
     </div>
   );
-
-}
+};

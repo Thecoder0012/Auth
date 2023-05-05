@@ -1,6 +1,11 @@
 import styles from "../styles/Login.module.css";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer,toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { API_URL } from "../urlConfig";
+
+
 import axios from "axios";
 
 export const Signup = () => {
@@ -8,44 +13,37 @@ export const Signup = () => {
     email: "",
     password: "",
   });
+    const { email, password } = credentials;
 
-  const [message, setMessage] = useState("");
 
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8080/signup", {
-        email: credentials.email,
-        password: credentials.password,
+      const response = await axios.post(API_URL + "/signup", {
+        email: email,
+        password: password,
       });
       if (response.status === 200) {
-        setMessage(response.data.message);
+        toast.success(response.data.message);
       }
     } catch (err) {
-      setMessage(err.response.data.message);
+      toast.error(err.response.data.message)
     }
   };
 
-  const inputChange = (event) => {
-    setCredentials({
-      ...credentials,
+  const handleInputChange = (event) => {
+    setCredentials(previousCredentials => ({
+      ...previousCredentials,
       [event.target.name]: event.target.value,
-    });
+    }));
   };
 
   return (
     <div className="">
-      <form onSubmit={submit} className={styles.container} method="POST">
-        <div className={styles.signUpMessage}>
-          <p
-            style={
-              message.charAt(0) === "Y" ? { color: "green" } : { color: "red" }
-            }
-          >
-            {message}
-          </p>
-        </div>
+      <ToastContainer />
+
+      <form onSubmit={handleSubmit} className={styles.container} method="POST">
         <h1>Sign up</h1>
         <p>
           <input
@@ -53,8 +51,8 @@ export const Signup = () => {
             type="text"
             name="email"
             placeholder="Email"
-            value={credentials.email}
-            onChange={inputChange}
+            value={email}
+            onChange={handleInputChange}
             required
           />
         </p>
@@ -64,8 +62,8 @@ export const Signup = () => {
             type="password"
             name="password"
             placeholder="Password"
-            value={credentials.password}
-            onChange={inputChange}
+            value={password}
+            onChange={handleInputChange}
             required
           />
         </p>
@@ -74,7 +72,7 @@ export const Signup = () => {
 
       <div className={styles.signUpButton}>
         <p>
-          <Link to="/login">Sign in here if you have registered!</Link>
+          <Link to="/">Sign in here if you have registered!</Link>
         </p>
       </div>
     </div>
