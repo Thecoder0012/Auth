@@ -15,14 +15,19 @@ router.post("/signup", async (req, res) => {
       [email, hashedPass]
     );
 
-    const mail = await transporter.sendMail({
+    const mail = transporter.sendMail({
       from: process.env.NODEMAILER_USER,
       to: email,
       subject: "Registration!",
       text: "Thanks for registering!",
+    }, (error, info) => {
+      if (error) {
+        console.error(error);
+      } else {
+        res.status(200).send({ message: "You have successfully signed up!", register, mail: { info: info } });
+      }
     });
     
-    res.status(200).send({ register, message: "You have successfully signed up!" });
   } catch (error) {
        res.status(400).send({message: "This email has already been taken. Try another email"});
   }
