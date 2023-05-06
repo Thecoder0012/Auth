@@ -38,14 +38,14 @@ input[placeholder] {
   transition: 0.2s all;
 }
 
-.signUpButton{
-    position: absolute;
-    left: 43%;
-    top: 58%;
+.signUpButton {
+  position: absolute;
+  left: 43%;
+  top: 58%;
 }
 
-.signUpMessage{
-    position: absolute; 
-    width: 300px;
-    top: -20%;
+.signUpMessage {
+  position: absolute;
+  width: 300px;
+  top: -20%;
 }

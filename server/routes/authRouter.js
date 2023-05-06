@@ -1,23 +1,30 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import db from "../database/connection.js";
+import "dotenv/config";
+import transporter from "../mail/mailConfig.js";
+
 const router = Router();
 
 router.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
     const hashedPass = await bcrypt.hash(password.toString(), 12);
     const register = await db.query(
       "INSERT INTO users (email,password) VALUES (?,?)",
       [email, hashedPass]
     );
-    res
-      .status(200)
-      .send({ register, message: "You have successfully signed up!" });
-  } catch (error) {
-    res.status(400).send({
-      message: "This email has already been taken. Try another email",
+
+    const mail = await transporter.sendMail({
+      from: process.env.NODEMAILER_USER,
+      to: email,
+      subject: "Registration!",
+      text: "Thanks for registering!",
     });
+    
+    res.status(200).send({ register, message: "You have successfully signed up!" });
+  } catch (error) {
+       res.status(400).send({message: "This email has already been taken. Try another email"});
   }
 });
 
@@ -35,7 +42,7 @@ router.post("/login", async (req, res) => {
     );
     const user = users[0];
     if (!!user) {
-        const comparePasswords = await bcrypt.compare(
+      const comparePasswords = await bcrypt.compare(
         password.toString(),
         user.password
       );

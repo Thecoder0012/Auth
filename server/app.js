@@ -17,13 +17,13 @@ app.use(cookieParser());
 
 app.use(
   session({
-    key: process.env.KEY,
-    secret: process.env.SECRET,
+    key: process.env.SESSION_KEY,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: false,
-      maxAge: (60 * 1000) * 10,
+      maxAge: 60 * 1000 * 10,
       httpOnly: true,
     },
   })

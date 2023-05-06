@@ -20,10 +20,12 @@ export const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        API_URL + "/login",{
+        API_URL + "/login",
+        {
           email: email,
           password: password,
-        },WITH_CREDENTIALS
+        },
+        WITH_CREDENTIALS
       );
       if (response.status === 200) {
         navigate("/homepage");
@@ -42,7 +44,11 @@ export const Login = () => {
 
   return (
     <div className="">
-      <ToastContainer autoClose={15000} closeOnClick={true} />
+      <ToastContainer
+        autoClose={15000}
+        closeOnClick={true}
+        position={toast.POSITION.TOP_CENTER}
+      />
 
       <form onSubmit={handleSubmit} className={styles.container} method="POST">
         <h1>Login</h1>

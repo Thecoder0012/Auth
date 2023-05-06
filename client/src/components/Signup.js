@@ -41,7 +41,11 @@ export const Signup = () => {
 
   return (
     <div className="">
-      <ToastContainer />
+      <ToastContainer
+        autoClose={15000}
+        closeOnClick={true}
+        position={toast.POSITION.TOP_CENTER}
+      />
 
       <form onSubmit={handleSubmit} className={styles.container} method="POST">
         <h1>Sign up</h1>
